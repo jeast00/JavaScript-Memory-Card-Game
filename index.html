@@ -8,13 +8,57 @@
 
 <body>
   <div id="wrapper">
+    <div id="start">Start</div>
     <div id="score"></div>
     <div id="message"></div>
     <div id="gameboard"></div>
   </div>
  <script>
+   var tileImages = [];
+   var tileArray = [];
+   var startButton = document.getElementById('start');
+   var gamePlay = false;
+
+
+   //Event Listeners
+   startButton.addEventListener('click', startGame);
+
+
+   //Functions
+   function startGame() {
+     startButton.style.display = 'none';
+     if(!gamePlay) {
+       gamePlay = true;
+       buildArray();
+       tileArray = tileImages.concat(tileImages); // add arrays to itself
+       shuffleArray(tileArray); //call the shuffleArray function
+       console.log(tileArray);
+     }
+
+     console.log('started');
+
+   }
+
+   function buildArray() {
+     for(var x = 1; x < 7; x++) {
+       tileImages.push(x+'.jpg');
+     }
+   }
+
+    function shuffleArray(array) {
+      for(var x = array.length - 1;x > 0; x--) {
+        var holder = Math.floor(Math.random() * (x+1) );
+        var itemValue = array[x];
+        array[x] = array[holder];
+        array[holder] = itemValue;
+        console.log(itemValue);
+      }
+      return array;
+    }
+
+
+
+
  </script>
 </body>
-
-
 </html>
