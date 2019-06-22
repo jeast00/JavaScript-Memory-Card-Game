@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript Memory Card Game</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="start">Start</div>
+    <div id="score"></div>
+    <div id="message"></div>
+    <div id="gameboard"></div>
+  </div>
+ <script>
+   var tileImages = [];
+   var startButton = document.getElementById('start');
+
+
+   //Event Listeners
+   startButton.addEventListener('click', startGame);
+
+
+
+   for(var x = 1; x < 7; x++) {
+     tileImages.push(x+'.jpg');
+   }
+
+
+   //Functions
+   function startGame() {
+     startButton.style.display = 'none';
+     console.log('started');
+
+   }
+
+
+
+
+ </script>
+</body>
+</html>
