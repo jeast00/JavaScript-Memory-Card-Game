@@ -15,24 +15,33 @@
   </div>
  <script>
    var tileImages = [];
+   var tileArray = [];
    var startButton = document.getElementById('start');
+   var gamePlay = false;
 
 
    //Event Listeners
    startButton.addEventListener('click', startGame);
 
 
-
-   for(var x = 1; x < 7; x++) {
-     tileImages.push(x+'.jpg');
-   }
-
-
    //Functions
    function startGame() {
      startButton.style.display = 'none';
+     if(!gamePlay) {
+       gamePlay = true;
+       buildArray();
+       tileArray = tileImages.concat(tileImages); // add tiles to itself
+       console.log(tileArray);
+     }
+
      console.log('started');
 
+   }
+
+   function buildArray() {
+     for(var x = 1; x < 7; x++) {
+       tileImages.push(x+'.jpg');
+     }
    }
 
 
