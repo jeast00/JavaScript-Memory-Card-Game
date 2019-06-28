@@ -3,12 +3,38 @@
 <head>
   <title>JavaScript Memory Card Game</title>
   <style>
+  .btn {
+      background: #3498db;
+      text-align: center;
+      -webkit-border-radius: 28;
+      -moz-border-radius: 28;
+      border-radius: 28px;
+      font-family: Arial;
+      color: #ffffff;
+      font-size: 20px;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #3cb0fd;
+      text-decoration: none;
+    }
+
+    .flipImage {
+      width:100px;
+    }
+
+    .gameTile {
+      display:inline-block;
+      border:1px solid black;
+    }
   </style>
 </head>
 
 <body>
   <div id="wrapper">
-    <div id="start">Start</div>
+    <div id="start" class="btn">Start</div>
     <div id="score"></div>
     <div id="message"></div>
     <div id="gameboard"></div>
@@ -17,6 +43,7 @@
    var tileImages = [];
    var tileArray = [];
    var startButton = document.getElementById('start');
+   var gameBoard = document.getElementById('gameboard');
    var gamePlay = false;
 
 
@@ -32,11 +59,18 @@
        buildArray();
        tileArray = tileImages.concat(tileImages); // add arrays to itself
        shuffleArray(tileArray); //call the shuffleArray function
-       console.log(tileArray);
+       buildBoard();
      }
 
-     console.log('started');
+   }
 
+   function buildBoard() {
+     var html = "";
+     for(var x = 0; x <= (tileArray.length - 1); x++) {
+       html += '<div class="gameTile"><div class="gameTile">';
+       html += '<img id="cardz'+x+'" src="images/backCard.jpg" onclick="pickCard('+x+')" class="flipImage"></div></div>';
+     }
+     gameBoard.innerHTML = html;
    }
 
    function buildArray() {
@@ -55,8 +89,6 @@
       }
       return array;
     }
-
-
 
 
  </script>
