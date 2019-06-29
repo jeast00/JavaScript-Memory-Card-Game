@@ -42,6 +42,8 @@
  <script>
    var tileImages = [];
    var tileArray = [];
+   var tileFlippedOver = [];
+   var cardFlipped = -1;
    var startButton = document.getElementById('start');
    var gameBoard = document.getElementById('gameboard');
    var gamePlay = false;
@@ -68,9 +70,35 @@
      var html = "";
      for(var x = 0; x <= (tileArray.length - 1); x++) {
        html += '<div class="gameTile"><div class="gameTile">';
-       html += '<img id="cardz'+x+'" src="images/backCard.jpg" onclick="pickCard('+x+')" class="flipImage"></div></div>';
+       html += '<img id="cardz'+x+'" src="images/backCard.jpg" onclick="pickCard('+x+',this)" class="flipImage"></div></div>';
      }
      gameBoard.innerHTML = html;
+   }
+
+   function isInArray(v, array) {
+     return array.indexOf(v) > -1;
+   }
+
+   function cardFlip(t,ti) {
+     t.src = "images/" + tileArray[ti];
+     tileFlippedOver.push(t.id );
+   }
+
+   function pickCard(tileIndex,t) {
+     // check if it's already flipped
+     if(!isInArray(t.id, tileFlippedOver)) {
+       console.log('not in array');
+     if(cardFlipped >= 0) {
+       cardFlip(t,tileIndex);
+         var secondCard = tileIndex;
+     }else {
+       //first cardFlipped
+       cardFlipped = tileIndex;
+       cardFlip(t,tileIndex);
+     }
+   }else {
+     console.log('in array');
+   }
    }
 
    function buildArray() {
