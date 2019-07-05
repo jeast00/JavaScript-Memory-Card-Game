@@ -45,6 +45,8 @@
     var tileArray = [];
     var tileFlippedOver = [];
     var cardFlipped = -1;
+    var timer = '';
+    var playLockout = false;
     var startButton = document.getElementById('start');
     var gameBoard = document.getElementById('gameboard');
     var gamePlay = false;
@@ -83,15 +85,44 @@
     function cardFlip(t, ti) {
       t.src = "images/" + tileArray[ti];
       tileFlippedOver.push(t.id);
+      console.log(tileFlippedOver);
     }
+
+
+    function hideCard() {
+      for(var x = 0; x < 2; x++) {
+      var vid = tileFlippedOver.pop();
+      document.getElementById(vid).src = "images/backCard.jpg";
+      console.log(vid);
+    }
+    clearInterval(timer);
+    playLockout = false;
+    cardFlipped = -1;
+  }
+
+  function checkSrc(v) {
+    var v = document.getElementById(v).src;
+    return v;
+  }
 
     function pickCard(tileIndex, t) {
       // check if it's already flipped
-      if (!isInArray(t.id, tileFlippedOver)) {
+      if (!isInArray(t.id, tileFlippedOver) && !playLockout) {
         console.log('not in array');
         if (cardFlipped >= 0) {
           cardFlip(t, tileIndex);
           var secondCard = tileIndex;
+          playLockout = true;
+          if(checkSrc(tileFlippedOver[tileFlippedOver.length-1]) == checkSrc(tileFlippedOver[tileFlippedOver.length-2])) {
+            //match
+            console.log('match');
+            playLockout = false;
+            cardFlipped = -1;
+          }else {
+            //no match
+            console.log('no match');
+            timer = setInterval(hideCard,3000);
+          }
         } else {
           //first cardFlipped
           cardFlipped = tileIndex;
