@@ -6,6 +6,9 @@
   <style>
     .btn {
       background: #3498db;
+      width: 200px;
+      margin: 0 auto;
+      margin-top: 300px;
       text-align: center;
       -webkit-border-radius: 28;
       -moz-border-radius: 28;
@@ -24,11 +27,16 @@
 
     .flipImage {
       width: 100px;
+      height: 100px;
     }
 
     .gameTile {
       display: inline-block;
       border: 1px solid black;
+    }
+
+    #message {
+
     }
   </style>
 </head>
@@ -47,17 +55,28 @@
     var cardFlipped = -1;
     var timer = '';
     var playLockout = false;
+    var gamePlay = false;
     var startButton = document.getElementById('start');
     var gameBoard = document.getElementById('gameboard');
-    var gamePlay = false;
+    var message = document.getElementById('message');
 
 
     //Event Listeners
     startButton.addEventListener('click', startGame);
 
+    function gameOver() {
+      startButton.style.display = 'block';
+      message.innerHTML = "Click to start new game";
+      gamePlay = false;
+      tileImages = [];
+      tileFlippedOver = [];
+    }
+
 
     //Functions
     function startGame() {
+      cardFlipped = -1;
+      playLockout = false;
       startButton.style.display = 'none';
       if (!gamePlay) {
         gamePlay = true;
@@ -65,6 +84,7 @@
         tileArray = tileImages.concat(tileImages); // add arrays to itself
         shuffleArray(tileArray); //call the shuffleArray function
         buildBoard();
+        message.innerHTML = "Click any tile";
       }
 
     }
@@ -85,7 +105,6 @@
     function cardFlip(t, ti) {
       t.src = "images/" + tileArray[ti];
       tileFlippedOver.push(t.id);
-      console.log(tileFlippedOver);
     }
 
 
@@ -93,11 +112,11 @@
       for(var x = 0; x < 2; x++) {
       var vid = tileFlippedOver.pop();
       document.getElementById(vid).src = "images/backCard.jpg";
-      console.log(vid);
     }
     clearInterval(timer);
     playLockout = false;
     cardFlipped = -1;
+    message.innerHTML = "Click any tile";
   }
 
   function checkSrc(v) {
@@ -108,20 +127,24 @@
     function pickCard(tileIndex, t) {
       // check if it's already flipped
       if (!isInArray(t.id, tileFlippedOver) && !playLockout) {
-        console.log('not in array');
+        message.innerHTML = "Check for Match";
         if (cardFlipped >= 0) {
           cardFlip(t, tileIndex);
           var secondCard = tileIndex;
           playLockout = true;
           if(checkSrc(tileFlippedOver[tileFlippedOver.length-1]) == checkSrc(tileFlippedOver[tileFlippedOver.length-2])) {
             //match
-            console.log('match');
+            message.innerHTML = "Match Found - Click more tiles";
             playLockout = false;
             cardFlipped = -1;
+            //Check if game is over
+            if(tileFlippedOver.length == tileArray.length) {
+              gameOver();
+            }
           }else {
             //no match
-            console.log('no match');
-            timer = setInterval(hideCard,3000);
+            message.innerHTML = "No Match";
+            timer = setInterval(hideCard,1000);
           }
         } else {
           //first cardFlipped
@@ -129,7 +152,7 @@
           cardFlip(t, tileIndex);
         }
       } else {
-        console.log('in array');
+        message.innerHTML = "Already Clicked";
       }
     }
 
